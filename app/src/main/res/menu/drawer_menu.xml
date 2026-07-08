@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_trackers">
+        <item
+            android:id="@+id/nav_water"
+            android:icon="@drawable/ic_water"
+            android:title="@string/nav_water" />
+        <item
+            android:id="@+id/nav_weight"
+            android:icon="@drawable/ic_weight"
+            android:title="@string/nav_weight" />
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@drawable/ic_report"
+            android:title="@string/nav_report" />
+    </group>
+    <item android:title="@string/menu_group_account">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/nav_settings" />
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/ic_account"
+                android:title="@string/nav_account" />
+        </menu>
+    </item>
+    <item android:title="@string/menu_group_support">
+        <menu>
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_feedback"
+                android:title="@string/nav_feedback" />
+            <item
+                android:id="@+id/nav_complains"
+                android:icon="@drawable/ic_complain"
+                android:title="@string/nav_complains" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
+                android:title="@string/nav_help" />
+            <item
+                android:id="@+id/nav_contact"
+                android:icon="@drawable/ic_contact"
+                android:title="@string/nav_contact" />
+            <item
+                android:id="@+id/nav_privacy"
+                android:icon="@drawable/ic_privacy"
+                android:title="@string/nav_privacy" />
+        </menu>
+    </item>
+    <group android:id="@+id/group_session">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/nav_logout" />
+    </group>
+</menu>

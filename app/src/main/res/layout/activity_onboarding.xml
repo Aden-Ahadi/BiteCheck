@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bc_background"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start|center_vertical"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/action_back"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/bc_text_primary" />
+    </FrameLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="20dp"
+        app:indicatorColor="@color/bc_primary"
+        app:trackColor="@color/bc_field_fill"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="6dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp">
+
+            <!-- ===== Step 0: Goal ===== -->
+            <LinearLayout
+                android:id="@+id/step_goal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.BiteCheck.OptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/onboarding_goal_title"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/onboarding_goal_sub"
+                    android:textColor="@color/bc_text_secondary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/opt_goal_lose"
+                    style="@style/Widget.BiteCheck.Option"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/goal_lose" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opt_goal_maintain"
+                    style="@style/Widget.BiteCheck.Option">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/goal_maintain" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opt_goal_gain"
+                    style="@style/Widget.BiteCheck.Option">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/goal_gain" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ===== Step 1: Gender ===== -->
+            <LinearLayout
+                android:id="@+id/step_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.BiteCheck.OptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/onboarding_gender_title"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/onboarding_gender_sub"
+                    android:textColor="@color/bc_text_secondary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/opt_gender_male"
+                    style="@style/Widget.BiteCheck.Option"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gender_male" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opt_gender_female"
+                    style="@style/Widget.BiteCheck.Option">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gender_female" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ===== Step 2: Date of birth ===== -->
+            <LinearLayout
+                android:id="@+id/step_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.BiteCheck.OptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/onboarding_dob_title"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/onboarding_dob_sub"
+                    android:textColor="@color/bc_text_secondary"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:hint="@string/hint_dob"
+                    app:endIconDrawable="@drawable/ic_calendar"
+                    app:endIconMode="custom">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_dob"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- ===== Step 3: Height & weight ===== -->
+            <LinearLayout
+                android:id="@+id/step_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.BiteCheck.OptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/onboarding_body_title"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/onboarding_body_sub"
+                    android:textColor="@color/bc_text_secondary"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:hint="@string/hint_height">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_height"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:hint="@string/hint_weight">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_weight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- ===== Step 4: Activity ===== -->
+            <LinearLayout
+                android:id="@+id/step_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.BiteCheck.OptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/onboarding_activity_title"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/onboarding_activity_sub"
+                    android:textColor="@color/bc_text_secondary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/opt_act_0"
+                    style="@style/Widget.BiteCheck.Option"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opt_act_1"
+                    style="@style/Widget.BiteCheck.Option">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opt_act_2"
+                    style="@style/Widget.BiteCheck.Option">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opt_act_3"
+                    style="@style/Widget.BiteCheck.Option">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/opt_act_4"
+                    style="@style/Widget.BiteCheck.Option">
+
+                    <TextView
+                        style="@style/TextAppearance.BiteCheck.OptionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activity_4" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ===== Step 5: Result reveal ===== -->
+            <LinearLayout
+                android:id="@+id/step_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="40dp"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="@drawable/bg_circle_white"
+                    android:backgroundTint="@color/bc_primary_container">
+
+                    <ImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_check"
+                        app:tint="@color/bc_primary" />
+                </FrameLayout>
+
+                <TextView
+                    style="@style/TextAppearance.BiteCheck.OptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:text="@string/onboarding_result_title"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/text_target_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/bc_primary"
+                    android:textSize="56sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboarding_result_unit"
+                    android:textColor="@color/bc_text_secondary"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="3dp"
+                    android:text="@string/onboarding_result_sub"
+                    android:textColor="@color/bc_text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/onboarding_continue" />
+</LinearLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/intro_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bc_primary">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/intro_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="48dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_intro_next"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:text="@string/intro_continue" />
+
+        <LinearLayout
+            android:id="@+id/intro_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_circle_white" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_circle_white" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_circle_white" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

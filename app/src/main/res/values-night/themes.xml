@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Dark theme keeps the same brand hues; Material3 supplies dark surfaces. -->
+    <style name="Theme.BiteCheck" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/bc_primary_container</item>
+        <item name="colorOnPrimary">@color/bc_on_primary_container</item>
+        <item name="colorPrimaryContainer">@color/bc_primary_dark</item>
+        <item name="colorOnPrimaryContainer">@color/bc_primary_container</item>
+        <item name="colorSecondary">@color/bc_secondary</item>
+        <item name="colorOnSecondary">@color/bc_on_secondary</item>
+        <item name="android:statusBarColor">@color/black</item>
+
+        <!-- Same iOS-feel foundations as the light theme -->
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="materialButtonStyle">@style/Widget.BiteCheck.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.BiteCheck.Card</item>
+        <item name="textInputStyle">@style/Widget.BiteCheck.TextInput</item>
+    </style>
+</resources>

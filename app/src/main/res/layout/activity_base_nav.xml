@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/bc_background"
+            app:navigationIconTint="@color/bc_text_primary"
+            app:popupTheme="@style/ThemeOverlay.BiteCheck.PopupMenu"
+            app:titleTextAppearance="@style/TextAppearance.BiteCheck.ToolbarTitle"
+            app:titleTextColor="@color/bc_text_primary" />
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/bc_surface"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp"
+        app:headerLayout="@layout/nav_header"
+        app:itemHorizontalPadding="18dp"
+        app:itemIconPadding="16dp"
+        app:itemIconTint="@color/nav_item_icon"
+        app:itemShapeAppearanceOverlay="@style/ShapeAppearanceOverlay.BiteCheck.NavItem"
+        app:itemShapeFillColor="@color/nav_item_fill"
+        app:itemShapeInsetEnd="12dp"
+        app:itemShapeInsetStart="12dp"
+        app:itemTextAppearance="@style/TextAppearance.BiteCheck.NavItem"
+        app:itemTextColor="@color/nav_item_text"
+        app:menu="@menu/drawer_menu" />
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/nav_contact"
+        android:src="@drawable/ic_contact"
+        app:tint="@color/bc_primary" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/contact_intro"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_call"
+        style="@style/Widget.Material3.Button.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/action_call_support"
+        app:icon="@drawable/ic_contact" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_email"
+        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/action_email_support"
+        app:icon="@drawable/ic_feedback" />
+</LinearLayout>

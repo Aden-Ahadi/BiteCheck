@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark-mode overrides for the iOS-style form/card tokens -->
+    <color name="bc_field_fill">#1C1C1E</color>
+    <color name="bc_card_stroke">#2C2C2E</color>
+</resources>

@@ -1,0 +1,256 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.BiteCheck" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/bc_primary</item>
+        <item name="colorOnPrimary">@color/bc_on_primary</item>
+        <item name="colorPrimaryContainer">@color/bc_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/bc_on_primary_container</item>
+        <item name="colorSecondary">@color/bc_secondary</item>
+        <item name="colorOnSecondary">@color/bc_on_secondary</item>
+
+        <!-- Surface system: replace M3's purple-tinted baseline with Yuka's
+             cream background + white surfaces (page bg, cards, bottom nav,
+             drawer, dialogs all derive from these). -->
+        <item name="android:colorBackground">@color/bc_background</item>
+        <item name="colorSurface">@color/bc_surface</item>
+        <item name="colorOnSurface">@color/bc_text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/bc_text_secondary</item>
+        <item name="colorSurfaceContainerLowest">@color/bc_surface</item>
+        <item name="colorSurfaceContainerLow">@color/bc_surface</item>
+        <item name="colorSurfaceContainer">@color/bc_surface</item>
+        <item name="colorSurfaceContainerHigh">@color/bc_surface</item>
+        <item name="colorSurfaceContainerHighest">@color/bc_field_fill</item>
+        <item name="colorSecondaryContainer">@color/bc_primary_container</item>
+        <item name="colorOnSecondaryContainer">@color/bc_on_primary_container</item>
+        <item name="colorOutlineVariant">@color/bc_card_stroke</item>
+
+        <!-- Light header chrome app-wide -->
+        <item name="android:statusBarColor">@color/bc_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="drawerArrowStyle">@style/Widget.BiteCheck.DrawerArrow</item>
+
+        <!-- iOS-feel foundations: Inter everywhere, pill buttons, flat cards, filled fields -->
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="materialButtonStyle">@style/Widget.BiteCheck.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.BiteCheck.Card</item>
+        <item name="textInputStyle">@style/Widget.BiteCheck.TextInput</item>
+
+        <!-- Rounded popup menus + dropdowns (overflow menu, meal-type list) -->
+        <item name="popupMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
+        <item name="actionOverflowMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
+        <item name="autoCompleteTextViewStyle">@style/Widget.BiteCheck.AutoComplete</item>
+    </style>
+
+    <style name="Widget.BiteCheck.PopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@drawable/bg_popup_menu</item>
+        <item name="android:overlapAnchor">false</item>
+        <item name="android:popupElevation">8dp</item>
+    </style>
+
+    <style name="Widget.BiteCheck.AutoComplete" parent="Widget.Material3.AutoCompleteTextView.FilledBox">
+        <item name="android:popupBackground">@drawable/bg_popup_menu</item>
+        <item name="android:dropDownVerticalOffset">6dp</item>
+    </style>
+
+    <!-- Toolbar overflow menus render in their own popupTheme context, so the
+         rounded popup style has to be declared here too, not just on the theme. -->
+    <style name="ThemeOverlay.BiteCheck.PopupMenu" parent="ThemeOverlay.Material3">
+        <item name="popupMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
+        <item name="actionOverflowMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
+        <item name="colorSurface">@color/bc_surface</item>
+        <item name="colorOnSurface">@color/bc_text_primary</item>
+    </style>
+
+    <style name="Widget.BiteCheck.DrawerArrow" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/bc_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.BiteCheck.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+    </style>
+
+    <!-- Splash screen: full brand-color window while the app starts. -->
+    <style name="Theme.BiteCheck.Splash">
+        <item name="android:windowBackground">@color/bc_primary</item>
+        <item name="android:statusBarColor">@color/bc_primary</item>
+        <item name="android:navigationBarColor">@color/bc_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Intro carousel: slides draw edge-to-edge behind transparent bars. -->
+    <style name="Theme.BiteCheck.Intro">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- White iOS-chrome screens (welcome + auth): light bars, dark icons. -->
+    <style name="Theme.BiteCheck.Light">
+        <item name="android:statusBarColor">@color/bc_surface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/bc_surface</item>
+    </style>
+
+    <!-- Primary filled pill button, SF-style weight. No drop shadow: the
+         default M3 button raises on press via a stateListAnimator — null it
+         out for a flat, iOS-like fill. -->
+    <style name="Widget.BiteCheck.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">28dp</item>
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- Flat card: no shadow, hairline stroke, generous radius. Outlined (not
+         Elevated) so there is no surface-tint shadow at rest. -->
+    <style name="Widget.BiteCheck.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardElevation">0dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/bc_card_stroke</item>
+    </style>
+
+    <!-- iOS grouped-form field: soft gray fill, no underline, rounded -->
+    <style name="Widget.BiteCheck.TextInput" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/bc_field_fill</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+    </style>
+
+    <!-- iOS top bar pieces -->
+    <style name="TextAppearance.BiteCheck.NavTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <!-- Yuka-style script display title (intro slides) -->
+    <style name="TextAppearance.BiteCheck.Script" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textSize">40sp</item>
+        <item name="android:fontFamily">@font/script_bold</item>
+        <item name="fontFamily">@font/script_bold</item>
+    </style>
+
+    <!-- Perfect-circle overlay (round arrow FAB on sign-up) -->
+    <style name="ShapeAppearanceOverlay.BiteCheck.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- iMessage-style chat bubbles: one tight corner on the sender's side -->
+    <style name="ShapeAppearanceOverlay.BiteCheck.BubbleUser" parent="">
+        <item name="cornerSize">20dp</item>
+        <item name="cornerSizeBottomRight">6dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.BiteCheck.BubbleBot" parent="">
+        <item name="cornerSize">20dp</item>
+        <item name="cornerSizeBottomLeft">6dp</item>
+    </style>
+
+    <!-- Borderless accent text button for Back / Next -->
+    <style name="Widget.BiteCheck.NavTextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:textColor">@color/bc_primary</item>
+        <item name="iconTint">@color/bc_primary</item>
+    </style>
+
+    <!-- Rounded bottom sheet (chat log confirmation, etc.) -->
+    <style name="Theme.BiteCheck.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.BiteCheck.BottomSheet</item>
+    </style>
+
+    <style name="Widget.BiteCheck.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/bc_surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.BiteCheck.BottomSheet</item>
+    </style>
+
+    <style name="ShapeAppearance.BiteCheck.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">28dp</item>
+        <item name="cornerSizeTopRight">28dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- Navigation drawer item text -->
+    <style name="TextAppearance.BiteCheck.NavItem" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.BiteCheck.NavItem" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <!-- Selectable option row (onboarding wizard) -->
+    <style name="Widget.BiteCheck.Option" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:background">@drawable/bg_option_card</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:minHeight">62dp</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingRight">18dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="TextAppearance.BiteCheck.OptionLabel" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/bc_text_primary</item>
+    </style>
+
+    <!-- Tappable full-width row inside a picker bottom sheet -->
+    <style name="Widget.BiteCheck.SheetOption" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textColor">@color/bc_text_primary</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <!-- Pop-in / pop-out with a bit of overshoot for anchored popups -->
+    <style name="Animation.BiteCheck.Popup" parent="">
+        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+
+    <!-- Hairline divider between list rows inside a card -->
+    <style name="Widget.BiteCheck.RowDivider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/bc_card_stroke</item>
+    </style>
+</resources>

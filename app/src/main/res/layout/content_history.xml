@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_history_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:paddingLeft="20dp"
+            android:paddingTop="8dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/bc_text_primary"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/text_history_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="6dp"
+            android:textColor="@color/bc_text_secondary"
+            android:textSize="14sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_meals"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingLeft="12dp"
+            android:paddingTop="4dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="96dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_history_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="14dp"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="@string/history_empty"
+        android:textColor="@color/bc_text_secondary"
+        android:textSize="15sp"
+        app:drawableTopCompat="@drawable/ic_history"
+        app:drawableTint="@color/bc_card_stroke" />
+
+    <ImageButton
+        android:id="@+id/fab_add_meal"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_circle_primary"
+        android:contentDescription="@string/title_add_meal"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_add"
+        android:tint="@color/white" />
+</FrameLayout>

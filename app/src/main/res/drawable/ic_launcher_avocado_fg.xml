@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Avocado logo inset into the adaptive-icon safe zone. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/logo_bitecheck"
+    android:insetBottom="24%"
+    android:insetLeft="24%"
+    android:insetRight="24%"
+    android:insetTop="24%" />

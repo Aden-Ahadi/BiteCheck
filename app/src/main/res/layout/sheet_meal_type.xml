@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/inter_bold"
+        android:text="@string/hint_meal_type"
+        android:textColor="@color/bc_text_primary"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/opt_breakfast"
+        style="@style/Widget.BiteCheck.SheetOption"
+        android:text="@string/meal_breakfast" />
+
+    <TextView
+        android:id="@+id/opt_lunch"
+        style="@style/Widget.BiteCheck.SheetOption"
+        android:text="@string/meal_lunch" />
+
+    <TextView
+        android:id="@+id/opt_dinner"
+        style="@style/Widget.BiteCheck.SheetOption"
+        android:text="@string/meal_dinner" />
+
+    <TextView
+        android:id="@+id/opt_snack"
+        style="@style/Widget.BiteCheck.SheetOption"
+        android:text="@string/meal_snack" />
+</LinearLayout>

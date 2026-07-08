@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Yuka-inspired palette (see docs/design.md): clean white surfaces, -->
+    <!-- fresh health green, carrot-orange accent, dark charcoal text. -->
+    <color name="bc_primary">#1FA55A</color>
+    <color name="bc_primary_dark">#15803D</color>
+    <color name="bc_on_primary">#FFFFFF</color>
+    <color name="bc_primary_container">#DCF5E7</color>
+    <color name="bc_on_primary_container">#0A3D24</color>
+    <color name="bc_secondary">#EA562A</color>
+    <color name="bc_on_secondary">#FFFFFF</color>
+    <color name="bc_background">#FAFAF8</color>
+    <color name="bc_surface">#FFFFFF</color>
+    <color name="bc_text_primary">#1F2933</color>
+    <color name="bc_text_secondary">#6B7280</color>
+
+    <!-- Charts (Reports, Phase 6) — hues validated for CVD separation and -->
+    <!-- contrast against the white card surface. Grid stays recessive. -->
+    <color name="bc_water">#2E7CD6</color>
+    <color name="bc_chart_grid">#E5E7EB</color>
+
+    <!-- Nutri-Score-style rating colors (Food Advisor verdicts, Phase 5) -->
+    <color name="bc_score_excellent">#1FA55A</color>
+    <color name="bc_score_good">#7DCB56</color>
+    <color name="bc_score_poor">#F2A93B</color>
+    <color name="bc_score_bad">#E51B31</color>
+
+    <!-- iOS-style form + card tokens (design polish phase) -->
+    <color name="bc_field_fill">#F2F2F7</color>
+    <color name="bc_card_stroke">#ECECEC</color>
+    <color name="bc_cta_dark">#177A43</color>
+
+    <!-- Pale icon-chip fills for Yuka-style list rows -->
+    <color name="bc_water_container">#DCEAFB</color>
+    <color name="bc_secondary_container">#FBE3D9</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+</resources>
