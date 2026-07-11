@@ -55,6 +55,9 @@ public abstract class BaseNavActivity extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navView = findViewById(R.id.nav_view);
+        // Drop the drawer's single global icon tint so each icon keeps its own
+        // colour — the drawer icons stay muted grey while Log Out shows red.
+        navView.setItemIconTintList(null);
         navView.setNavigationItemSelectedListener(this::onDrawerItemSelected);
 
         bottomNav = findViewById(R.id.bottom_nav);
@@ -89,7 +92,13 @@ public abstract class BaseNavActivity extends AppCompatActivity {
             Intent intent = new Intent(this, target);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-            overridePendingTransition(0, 0);
+            // Slide toward the tapped tab: right if it sits further along the
+            // bottom bar, left if it sits before the current one.
+            if (tabIndex(id) > tabIndex(getBottomNavItemId())) {
+                com.example.bitecheck.util.NavAnim.forward(this);
+            } else {
+                com.example.bitecheck.util.NavAnim.backward(this);
+            }
             // Dashboard stays as the task root; other tabs finish so back
             // always returns to Dashboard instead of stacking tabs.
             if (!(this instanceof DashboardActivity)) {
@@ -97,6 +106,18 @@ public abstract class BaseNavActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    /** Left-to-right order of the bottom-nav tabs, for slide direction. */
+    private int tabIndex(int id) {
+        if (id == R.id.nav_dashboard) {
+            return 0;
+        } else if (id == R.id.nav_chat) {
+            return 1;
+        } else if (id == R.id.nav_advisor) {
+            return 2;
+        }
+        return 3; // nav_history
     }
 
     private boolean onDrawerItemSelected(MenuItem item) {
@@ -129,6 +150,7 @@ public abstract class BaseNavActivity extends AppCompatActivity {
         }
         if (target != null) {
             startActivity(new Intent(this, target));
+            com.example.bitecheck.util.NavAnim.forward(this);
         }
         return true;
     }

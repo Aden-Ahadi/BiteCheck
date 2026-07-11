@@ -23,10 +23,24 @@
         <item name="colorSecondaryContainer">@color/bc_primary_container</item>
         <item name="colorOnSecondaryContainer">@color/bc_on_primary_container</item>
         <item name="colorOutlineVariant">@color/bc_card_stroke</item>
+        <!-- Muted grey for icon tints that resolve ?attr/colorControlNormal
+             (e.g. the drawer icons, which are tinted per-drawable). -->
+        <item name="colorControlNormal">@color/bc_text_secondary</item>
+
+        <!-- Cream window so screen-slide transitions never flash black behind
+             the moving screens. -->
+        <item name="android:windowBackground">@color/bc_background</item>
+        <!-- Subtle slide transitions for every open/close (incl. the back
+             button), driven by the framework so z-order stays correct. -->
+        <item name="android:windowAnimationStyle">@style/Widget.BiteCheck.WindowAnimation</item>
 
         <!-- Light header chrome app-wide -->
         <item name="android:statusBarColor">@color/bc_background</item>
         <item name="android:windowLightStatusBar">true</item>
+        <!-- White system nav bar so it blends with the white bottom nav (no seam
+             at the bottom of the tab screens); dark gesture pill/icons on top. -->
+        <item name="android:navigationBarColor">@color/bc_surface</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="drawerArrowStyle">@style/Widget.BiteCheck.DrawerArrow</item>
 
         <!-- iOS-feel foundations: Inter everywhere, pill buttons, flat cards, filled fields -->
@@ -65,6 +79,25 @@
 
     <style name="Widget.BiteCheck.DrawerArrow" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/bc_text_primary</item>
+    </style>
+
+    <!-- Framework-driven activity transitions (cover style): the moving screen
+         slides fully in/out over a static screen, so there's never a gap, ghost
+         or jump-cut. Opening slides in from the right; the back button slides
+         the current screen off to the right. -->
+    <style name="Widget.BiteCheck.WindowAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/hold</item>
+        <item name="android:activityCloseEnterAnimation">@anim/hold</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <!-- Bottom-nav active state is conveyed by a solid green icon + green label,
+         not the default pill, so hide the active indicator entirely. -->
+    <style name="Widget.BiteCheck.NavIndicator.None" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+        <item name="android:width">0dp</item>
+        <item name="android:height">0dp</item>
     </style>
 
     <style name="TextAppearance.BiteCheck.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">

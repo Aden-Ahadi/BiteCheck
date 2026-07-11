@@ -88,9 +88,6 @@ public class MealHistoryActivity extends BaseNavActivity {
         if (id == R.id.action_pick_date) {
             showDatePicker();
             return true;
-        } else if (id == R.id.action_add_meal) {
-            showAddMealDialog();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -233,14 +230,45 @@ public class MealHistoryActivity extends BaseNavActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getBindingAdapterPosition();
-                Meal meal = adapter.getAt(position);
-                mealDao.delete(meal.id);
-                adapter.removeAt(position);
-                refreshHeader();
-                Toast.makeText(MealHistoryActivity.this,
-                        R.string.msg_meal_deleted, Toast.LENGTH_SHORT).show();
+                confirmDeleteMeal(position);
             }
         }).attachToRecyclerView(recycler);
+    }
+
+    /**
+     * Swiping a meal only arms the delete — it's confirmed in a bottom sheet so
+     * an accidental swipe can't wipe a log. Cancelling restores the swiped row.
+     */
+    private void confirmDeleteMeal(int position) {
+        Meal meal = adapter.getAt(position);
+        if (meal == null) {
+            adapter.notifyItemChanged(position);
+            return;
+        }
+        BottomSheetDialog sheet =
+                new BottomSheetDialog(this, R.style.Theme_BiteCheck_BottomSheet);
+        View view = getLayoutInflater().inflate(R.layout.sheet_delete_meal, null);
+
+        boolean[] confirmed = {false};
+        view.findViewById(R.id.btn_confirm_delete_meal).setOnClickListener(v -> {
+            confirmed[0] = true;
+            mealDao.delete(meal.id);
+            adapter.removeAt(position);
+            refreshHeader();
+            sheet.dismiss();
+            Toast.makeText(this, R.string.msg_meal_deleted, Toast.LENGTH_SHORT).show();
+        });
+        view.findViewById(R.id.btn_cancel_delete_meal).setOnClickListener(v -> sheet.dismiss());
+        // Any dismissal that wasn't a confirm (cancel, tap-outside, back) must
+        // un-swipe the row so it stays in the list.
+        sheet.setOnDismissListener(d -> {
+            if (!confirmed[0]) {
+                adapter.notifyItemChanged(position);
+            }
+        });
+
+        sheet.setContentView(view);
+        sheet.show();
     }
 
     private void refreshHeader() {

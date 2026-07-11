@@ -163,20 +163,11 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="14dp">
 
-                    <FrameLayout
+                    <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/bg_circle_white"
-                        android:backgroundTint="@color/bc_water_container">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/dashboard_water_title"
-                            android:src="@drawable/ic_water"
-                            app:tint="@color/bc_water" />
-                    </FrameLayout>
+                        android:contentDescription="@string/dashboard_water_title"
+                        android:src="@drawable/ic_water_glass" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -224,20 +215,11 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="14dp">
 
-                    <FrameLayout
+                    <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/bg_circle_white"
-                        android:backgroundTint="@color/bc_secondary_container">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/dashboard_weight_title"
-                            android:src="@drawable/ic_weight"
-                            app:tint="@color/bc_secondary" />
-                    </FrameLayout>
+                        android:contentDescription="@string/dashboard_weight_title"
+                        android:src="@drawable/ic_weight_scale" />
 
                     <TextView
                         android:layout_width="0dp"

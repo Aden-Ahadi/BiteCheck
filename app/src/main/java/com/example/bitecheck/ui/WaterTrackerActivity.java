@@ -1,8 +1,10 @@
 package com.example.bitecheck.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bitecheck.R;
 import com.example.bitecheck.data.local.WaterDao;
@@ -35,11 +37,20 @@ public class WaterTrackerActivity extends BaseSecondaryActivity {
 
         findViewById(R.id.btn_add_250).setOnClickListener(v -> addWater(250));
         findViewById(R.id.btn_add_500).setOnClickListener(v -> addWater(500));
+        findViewById(R.id.btn_undo_water).setOnClickListener(v -> undoWater());
         refresh();
     }
 
     private void addWater(int amountMl) {
         waterDao.insert(userId, amountMl);
+        refresh();
+    }
+
+    private void undoWater() {
+        boolean removed = waterDao.deleteLast(userId, DateUtil.today());
+        Toast.makeText(this,
+                removed ? R.string.msg_water_undone : R.string.msg_water_nothing,
+                Toast.LENGTH_SHORT).show();
         refresh();
     }
 
@@ -52,5 +63,7 @@ public class WaterTrackerActivity extends BaseSecondaryActivity {
         goalText.setText(getString(R.string.water_goal_format, DAILY_GOAL_ML));
         progress.setMax(DAILY_GOAL_ML);
         progress.setProgress(Math.min(total, DAILY_GOAL_ML));
+        // Only offer "undo" when there's actually something logged to remove.
+        findViewById(R.id.btn_undo_water).setVisibility(total > 0 ? View.VISIBLE : View.GONE);
     }
 }

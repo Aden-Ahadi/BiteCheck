@@ -33,6 +33,14 @@ public class WaterDao {
         helper.getWritableDatabase().insert("water_logs", null, values);
     }
 
+    /** Removes the most recent entry for the day (an "undo" for a mistaken tap). */
+    public boolean deleteLast(String userId, String day) {
+        return helper.getWritableDatabase().delete("water_logs",
+                "id = (SELECT id FROM water_logs WHERE user_id = ? AND logged_at LIKE ? " +
+                        "ORDER BY id DESC LIMIT 1)",
+                new String[]{userId, day + "%"}) > 0;
+    }
+
     public int totalForDay(String userId, String day) {
         try (Cursor cursor = helper.getReadableDatabase().rawQuery(
                 "SELECT COALESCE(SUM(amount_ml), 0) FROM water_logs " +
