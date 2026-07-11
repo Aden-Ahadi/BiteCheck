@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The stationary screen: stays fully in place and opaque underneath the
+     moving screen for the whole transition (prevents any gap or flicker). -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="200"
+    android:fromXDelta="0"
+    android:toXDelta="0" />

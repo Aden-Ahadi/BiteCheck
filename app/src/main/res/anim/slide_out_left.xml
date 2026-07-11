@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The leaving screen slides fully off to the left, revealing a static screen. -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="200"
+    android:fromXDelta="0"
+    android:interpolator="@android:anim/accelerate_interpolator"
+    android:toXDelta="-100%p" />
