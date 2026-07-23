@@ -277,5 +277,7 @@
     <string name="action_submit">Submit</string>
     <string name="msg_submitted">Thanks! Your message was submitted.</string>
     <string name="msg_submit_failed">Couldn\'t submit right now — make sure the cloud tables exist (docs/supabase-schema.sql) and try again.</string>
+    <string name="action_ok">OK</string>
+    <string name="action_thanks_chef">Thanks, Chef!</string>
     <string name="msg_sms_permission_granted">SMS permission granted! Tap submit again to send.</string>
 </resources>

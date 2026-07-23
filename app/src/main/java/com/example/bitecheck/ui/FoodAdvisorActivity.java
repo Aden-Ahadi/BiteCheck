@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,16 @@ public class FoodAdvisorActivity extends BaseTypingActivity {
         });
 
         askButton.setOnClickListener(v -> ask());
+
+        findViewById(R.id.btn_reset_advisor).setOnClickListener(v -> resetUI());
+    }
+
+    private void resetUI() {
+        photo = null;
+        findViewById(R.id.image_meal_preview).setVisibility(View.GONE);
+        findViewById(R.id.card_advice).setVisibility(View.GONE);
+        TextInputEditText input = findViewById(R.id.input_advisor);
+        input.setText("");
     }
 
     @Override
@@ -80,6 +91,13 @@ public class FoodAdvisorActivity extends BaseTypingActivity {
             Toast.makeText(this, R.string.advisor_need_input, Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Dismiss the keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null && getCurrentFocus() != null) {
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+
         if (!NetworkUtil.isOnline(this)) {
             Toast.makeText(this, R.string.error_no_internet, Toast.LENGTH_LONG).show();
             return;
@@ -97,10 +115,7 @@ public class FoodAdvisorActivity extends BaseTypingActivity {
         String goal = profile != null ? profile.goal : "maintain";
 
         askButton.setEnabled(false);
-        thinkingWords.start(word -> {
-            askButton.setText(word);
-            showAdvice(word, R.color.bc_text_secondary);
-        });
+        thinkingWords.start(word -> showAdvice(word, R.color.bc_text_secondary));
 
         gemini.advise(text, photoAsBase64(), remaining, goal,
                 new GeminiClient.AdviceCallback() {
@@ -144,9 +159,14 @@ public class FoodAdvisorActivity extends BaseTypingActivity {
     private void showAdvice(String text, int colorRes) {
         MaterialCardView card = findViewById(R.id.card_advice);
         TextView adviceText = findViewById(R.id.text_advice);
+        View resetBtn = findViewById(R.id.btn_reset_advisor);
+
         card.setVisibility(View.VISIBLE);
         adviceText.setText(text);
         adviceText.setTextColor(ContextCompat.getColor(this, colorRes));
+
+        // Only show the reset button if we are NOT currently thinking (rotating words)
+        resetBtn.setVisibility(thinkingWords.isStarted() ? View.GONE : View.VISIBLE);
     }
 
     private void resetButton() {

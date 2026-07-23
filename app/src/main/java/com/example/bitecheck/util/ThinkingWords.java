@@ -73,4 +73,8 @@ public final class ThinkingWords {
             tick = null;
         }
     }
+
+    public boolean isStarted() {
+        return tick != null;
+    }
 }
