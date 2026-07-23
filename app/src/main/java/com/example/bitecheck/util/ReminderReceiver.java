@@ -8,10 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.bitecheck.R;
 import com.example.bitecheck.ui.MainActivity;
@@ -32,12 +34,12 @@ public class ReminderReceiver extends BroadcastReceiver {
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, openChat,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        // Load the Avocado JPG as a Large Icon
-        Bitmap avocado = BitmapFactory.decodeResource(context.getResources(), R.drawable.logo_bitecheck);
+        // Load the specialized "no margin" avocado for the large icon
+        Bitmap largeIcon = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_notification_large_avocado));
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher) // Use your actual app icon
-                .setLargeIcon(avocado) // Keep the big avocado logo
+                .setSmallIcon(R.drawable.ic_launcher_foreground) // Fork & Knife in status bar
+                .setLargeIcon(largeIcon) // Big Avocado on the right
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(context.getString(R.string.notification_text))
                 .setContentIntent(contentIntent)
@@ -58,6 +60,17 @@ public class ReminderReceiver extends BroadcastReceiver {
             int m = prefs.getInt(SettingsActivity.KEY_REMINDER_MINUTE, 0);
             ReminderScheduler.schedule(context, h, m, true);
         }
+    }
+
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable == null) return null;
+        // Use a fixed size for the notification icon to ensure high quality
+        int size = 192; 
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, size, size);
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     public static void createChannel(Context context) {

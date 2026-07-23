@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Avocado logo inset into the adaptive-icon safe zone. -->
+<!-- Avocado logo with original 24% margins for launcher/splash -->
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@drawable/logo_bitecheck"
     android:insetBottom="24%"
