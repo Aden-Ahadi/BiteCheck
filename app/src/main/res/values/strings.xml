@@ -211,7 +211,7 @@
     <string name="settings_reminder_time">Reminder time: %1$02d:%2$02d</string>
     <string name="notification_channel_name">Reminders</string>
     <string name="notification_channel_desc">Daily meal and water logging reminders</string>
-    <string name="notification_title">Time to log your meals 🍽</string>
+    <string name="notification_title">Time to log your meals</string>
     <string name="notification_text">Tell BiteCheck what you ate today — it only takes a moment.</string>
     <string name="action_more">More options</string>
     <string name="action_edit_profile">Edit Profile</string>
@@ -277,4 +277,5 @@
     <string name="action_submit">Submit</string>
     <string name="msg_submitted">Thanks! Your message was submitted.</string>
     <string name="msg_submit_failed">Couldn\'t submit right now — make sure the cloud tables exist (docs/supabase-schema.sql) and try again.</string>
+    <string name="msg_sms_permission_granted">SMS permission granted! Tap submit again to send.</string>
 </resources>

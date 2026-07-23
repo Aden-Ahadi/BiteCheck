@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** Bluetooth screen (assignment requirement): enable BT + list paired devices. */
+/** Bluetooth screen : enable BT + list paired devices. */
 public class DevicesActivity extends BaseSecondaryActivity {
 
     private static final int REQUEST_BT_PERMISSION = 61;

@@ -106,9 +106,13 @@
         <item name="fontFamily">@font/inter_bold</item>
     </style>
 
-    <!-- Splash screen: full brand-color window while the app starts. -->
-    <style name="Theme.BiteCheck.Splash">
+    <!-- Splash screen: brand-color window with centered avocado while the app starts.
+         Uses Android 12+ Splash Screen API to avoid the "square logo" flash. -->
+    <style name="Theme.BiteCheck.Splash" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/bc_primary</item>
+        <item name="android:windowSplashScreenBackground">@color/bc_primary</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
         <item name="android:statusBarColor">@color/bc_primary</item>
         <item name="android:navigationBarColor">@color/bc_primary</item>
         <item name="android:windowLightStatusBar">false</item>

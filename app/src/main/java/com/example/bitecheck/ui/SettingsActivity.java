@@ -9,7 +9,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -18,12 +20,14 @@ import com.example.bitecheck.util.ReminderReceiver;
 import com.example.bitecheck.util.ReminderScheduler;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
+import java.util.Locale;
+
 public class SettingsActivity extends BaseSecondaryActivity {
 
-    private static final String PREFS = "bitecheck_settings";
-    private static final String KEY_REMINDER_ENABLED = "reminder_enabled";
-    private static final String KEY_REMINDER_HOUR = "reminder_hour";
-    private static final String KEY_REMINDER_MINUTE = "reminder_minute";
+    public static final String PREFS = "bitecheck_settings";
+    public static final String KEY_REMINDER_ENABLED = "reminder_enabled";
+    public static final String KEY_REMINDER_HOUR = "reminder_hour";
+    public static final String KEY_REMINDER_MINUTE = "reminder_minute";
     private static final int REQUEST_NOTIFICATIONS = 51;
 
     private SharedPreferences prefs;
@@ -71,11 +75,22 @@ public class SettingsActivity extends BaseSecondaryActivity {
                     updateTimeLabel();
                     if (reminderSwitch.isChecked()) {
                         ReminderScheduler.schedule(this, pickedHour, pickedMinute);
+                        String msg = String.format(Locale.US, "Reminder set for %02d:%02d", pickedHour, pickedMinute);
+                        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                     }
                 }, hour(), minute(), true).show());
 
         findViewById(R.id.btn_devices).setOnClickListener(v ->
                 startActivity(new Intent(this, DevicesActivity.class)));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_NOTIFICATIONS && grantResults.length > 0 
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.msg_sms_permission_granted, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void requestNotificationPermissionIfNeeded() {
