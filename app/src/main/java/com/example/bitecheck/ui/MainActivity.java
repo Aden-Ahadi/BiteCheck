@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +36,7 @@ public class MainActivity extends BaseTypingActivity {
 
     private ChatAdapter chatAdapter;
     private RecyclerView recycler;
+    private View btnScrollBottom;
     private TextInputEditText input;
     private MealDao mealDao;
     private String userId;
@@ -59,9 +61,23 @@ public class MainActivity extends BaseTypingActivity {
 
         chatAdapter = new ChatAdapter();
         recycler = findViewById(R.id.recycler_chat);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(chatAdapter);
         chatAdapter.add(getString(R.string.chat_welcome), false);
+
+        btnScrollBottom = findViewById(R.id.btn_scroll_bottom);
+        btnScrollBottom.setOnClickListener(v -> scrollToBottom(true));
+
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                // Show the "scroll to bottom" button if we are not at the end
+                boolean isAtBottom = !recyclerView.canScrollVertically(1);
+                btnScrollBottom.setVisibility(isAtBottom ? View.GONE : View.VISIBLE);
+            }
+        });
 
         input = findViewById(R.id.input_chat);
         findViewById(R.id.btn_send).setOnClickListener(v -> send());
@@ -75,7 +91,7 @@ public class MainActivity extends BaseTypingActivity {
         input.setText("");
         chatAdapter.add(text, true);
         int thinkingPos = chatAdapter.add(getString(R.string.chat_thinking), false);
-        scrollToBottom();
+        scrollToBottom(true); // Always scroll for user-sent messages
 
         // If the bot just asked for a quantity, fold the answer into the
         // original message so the model sees the full picture in one shot.
@@ -108,7 +124,7 @@ public class MainActivity extends BaseTypingActivity {
                     pendingMealText = text;
                     pendingQuestion = question;
                     chatAdapter.replace(thinkingPos, question);
-                    scrollToBottom();
+                    scrollToBottom(false); // Only scroll if already at bottom
                 }
 
                 @Override
@@ -128,7 +144,7 @@ public class MainActivity extends BaseTypingActivity {
         thinkingWords.stop();
         if (foods.isEmpty()) {
             chatAdapter.replace(thinkingPos, getString(R.string.chat_no_foods));
-            scrollToBottom();
+            scrollToBottom(false);
             return;
         }
 
@@ -138,7 +154,7 @@ public class MainActivity extends BaseTypingActivity {
         }
 
         chatAdapter.replace(thinkingPos, getString(R.string.chat_found_foods));
-        scrollToBottom();
+        scrollToBottom(false);
         showConfirmSheet(foods, total, offline);
     }
 
@@ -170,14 +186,14 @@ public class MainActivity extends BaseTypingActivity {
                 reply += "\n" + getString(R.string.chat_offline_note);
             }
             chatAdapter.add(reply, false);
-            scrollToBottom();
+            scrollToBottom(true); // Result of action, scroll to bottom
             sheet.dismiss();
         });
         // Cancel button and swipe/back both route through cancel().
         view.findViewById(R.id.btn_sheet_cancel).setOnClickListener(v -> sheet.cancel());
         sheet.setOnCancelListener(d -> {
             chatAdapter.add(getString(R.string.chat_not_logged), false);
-            scrollToBottom();
+            scrollToBottom(true);
         });
 
         sheet.setContentView(view);
@@ -213,9 +229,14 @@ public class MainActivity extends BaseTypingActivity {
                 quantity, food.unit, food.food).trim().replaceAll("\\s+", " ");
     }
 
-    private void scrollToBottom() {
-        recycler.post(() ->
-                recycler.smoothScrollToPosition(chatAdapter.getItemCount() - 1));
+    private void scrollToBottom(boolean force) {
+        if (chatAdapter.getItemCount() == 0) return;
+
+        boolean isAtBottom = !recycler.canScrollVertically(1);
+        if (force || isAtBottom) {
+            recycler.post(() ->
+                    recycler.smoothScrollToPosition(chatAdapter.getItemCount() - 1));
+        }
     }
 
     @Override

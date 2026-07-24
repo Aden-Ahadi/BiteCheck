@@ -5,25 +5,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_chat"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="12dp" />
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/text_chat_welcome"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:padding="32dp"
-        android:text="@string/chat_welcome"
-        android:textAppearance="?attr/textAppearanceBodyLarge"
-        android:textColor="@color/bc_text_secondary"
-        android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_chat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="12dp" />
+
+        <ImageButton
+            android:id="@+id/btn_scroll_bottom"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_circle_white"
+            android:contentDescription="@string/action_more"
+            android:elevation="4dp"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_chevron_down"
+            android:visibility="gone"
+            app:tint="@color/bc_primary" />
+
+        <TextView
+            android:id="@+id/text_chat_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="32dp"
+            android:text="@string/chat_welcome"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="@color/bc_text_secondary"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

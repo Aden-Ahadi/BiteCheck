@@ -96,13 +96,23 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_reset_advisor"
-                    style="@style/Widget.Material3.Button.TextButton"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_gravity="end"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingHorizontal="12dp"
                     android:text="@string/action_thanks_chef"
-                    android:visibility="gone" />
+                    android:textColor="@color/bc_primary"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/bc_primary_container"
+                    app:cornerRadius="18dp"
+                    app:icon="@drawable/ic_sparkles"
+                    app:iconSize="14dp"
+                    app:iconTint="@color/bc_primary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
