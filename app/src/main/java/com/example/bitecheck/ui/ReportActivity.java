@@ -270,7 +270,7 @@ public class ReportActivity extends BaseSecondaryActivity {
         }
     }
 
-    /** SMS share (assignment requirement): ask for a number, send via SmsManager. */
+    /** SMS share  ask for a number, send via SmsManager. */
     private void promptPhoneNumber() {
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_PHONE);
