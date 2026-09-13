@@ -3,6 +3,7 @@ package com.example.bitecheck.data.local;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.example.bitecheck.model.Meal;
 
@@ -22,6 +23,7 @@ public class MealDao {
         if (meal.uuid == null) {
             meal.uuid = UUID.randomUUID().toString();
         }
+
         ContentValues values = new ContentValues();
         values.put("uuid", meal.uuid);
         values.put("user_id", meal.userId);
@@ -32,8 +34,11 @@ public class MealDao {
         values.put("calories", meal.calories);
         values.put("logged_at", meal.loggedAt);
         values.put("synced", meal.synced ? 1 : 0);
-        return helper.getWritableDatabase().insertWithOnConflict("meals", null, values, 
-                android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE);
+        
+        // CONFLICT_REPLACE handles the UNIQUE constraint on the uuid column.
+        // If a meal with this UUID already exists, it is replaced.
+        return helper.getWritableDatabase().insertWithOnConflict("meals", null, values,
+                SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public int caloriesForDay(String userId, String day) {

@@ -45,10 +45,32 @@ public final class DateUtil {
 
     public static String displayTime(String timestamp) {
         try {
-            Date date = TIMESTAMP.parse(timestamp);
+            Date date = parseAny(timestamp);
             return date == null ? "" : DISPLAY_TIME.format(date);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return "";
+        }
+    }
+
+    /** Normalizes a timestamp from either SQLite or Supabase format to standard SQLite format. */
+    public static String normalize(String timestamp) {
+        Date d = parseAny(timestamp);
+        return d != null ? TIMESTAMP.format(d) : timestamp;
+    }
+
+    private static Date parseAny(String input) {
+        if (input == null || input.isEmpty()) return null;
+        try {
+            // Try standard SQLite format first
+            return TIMESTAMP.parse(input);
+        } catch (ParseException e) {
+            try {
+                // Try ISO format (Supabase)
+                String iso = input.replace("T", " ").split("\\.")[0].split("\\+")[0].split("Z")[0];
+                return TIMESTAMP.parse(iso);
+            } catch (Exception e2) {
+                return null;
+            }
         }
     }
 }

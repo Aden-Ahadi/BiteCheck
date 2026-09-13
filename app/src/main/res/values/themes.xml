@@ -23,34 +23,24 @@
         <item name="colorSecondaryContainer">@color/bc_primary_container</item>
         <item name="colorOnSecondaryContainer">@color/bc_on_primary_container</item>
         <item name="colorOutlineVariant">@color/bc_card_stroke</item>
-        <!-- Muted grey for icon tints that resolve ?attr/colorControlNormal
-             (e.g. the drawer icons, which are tinted per-drawable). -->
         <item name="colorControlNormal">@color/bc_text_secondary</item>
 
-        <!-- Cream window so screen-slide transitions never flash black behind
-             the moving screens. -->
         <item name="android:windowBackground">@color/bc_background</item>
-        <!-- Subtle slide transitions for every open/close (incl. the back
-             button), driven by the framework so z-order stays correct. -->
         <item name="android:windowAnimationStyle">@style/Widget.BiteCheck.WindowAnimation</item>
 
         <!-- Light header chrome app-wide -->
         <item name="android:statusBarColor">@color/bc_background</item>
         <item name="android:windowLightStatusBar">true</item>
-        <!-- White system nav bar so it blends with the white bottom nav (no seam
-             at the bottom of the tab screens); dark gesture pill/icons on top. -->
         <item name="android:navigationBarColor">@color/bc_surface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="drawerArrowStyle">@style/Widget.BiteCheck.DrawerArrow</item>
 
-        <!-- iOS-feel foundations: Inter everywhere, pill buttons, flat cards, filled fields -->
         <item name="android:fontFamily">@font/inter</item>
         <item name="fontFamily">@font/inter</item>
         <item name="materialButtonStyle">@style/Widget.BiteCheck.Button</item>
         <item name="materialCardViewStyle">@style/Widget.BiteCheck.Card</item>
         <item name="textInputStyle">@style/Widget.BiteCheck.TextInput</item>
 
-        <!-- Rounded popup menus + dropdowns (overflow menu, meal-type list) -->
         <item name="popupMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
         <item name="actionOverflowMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
         <item name="autoCompleteTextViewStyle">@style/Widget.BiteCheck.AutoComplete</item>
@@ -67,8 +57,6 @@
         <item name="android:dropDownVerticalOffset">6dp</item>
     </style>
 
-    <!-- Toolbar overflow menus render in their own popupTheme context, so the
-         rounded popup style has to be declared here too, not just on the theme. -->
     <style name="ThemeOverlay.BiteCheck.PopupMenu" parent="ThemeOverlay.Material3">
         <item name="popupMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
         <item name="android:popupMenuStyle">@style/Widget.BiteCheck.PopupMenu</item>
@@ -81,10 +69,6 @@
         <item name="color">@color/bc_text_primary</item>
     </style>
 
-    <!-- Framework-driven activity transitions (cover style): the moving screen
-         slides fully in/out over a static screen, so there's never a gap, ghost
-         or jump-cut. Opening slides in from the right; the back button slides
-         the current screen off to the right. -->
     <style name="Widget.BiteCheck.WindowAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/hold</item>
@@ -92,8 +76,6 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
-    <!-- Bottom-nav active state is conveyed by a solid green icon + green label,
-         not the default pill, so hide the active indicator entirely. -->
     <style name="Widget.BiteCheck.NavIndicator.None" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@android:color/transparent</item>
         <item name="android:width">0dp</item>
@@ -106,35 +88,26 @@
         <item name="fontFamily">@font/inter_bold</item>
     </style>
 
-    <!-- Splash screen: brand-color window with centered avocado while the app starts.
-         Uses Android 12+ Splash Screen API to avoid the "square logo" flash. -->
+    <!-- Splash screen: Simple brand-color background to prevent Android 12 API crashes. -->
     <style name="Theme.BiteCheck.Splash" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/bc_primary</item>
-        <item name="android:windowSplashScreenBackground">@color/bc_primary</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
-        <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
         <item name="android:statusBarColor">@color/bc_primary</item>
         <item name="android:navigationBarColor">@color/bc_primary</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <!-- Intro carousel: slides draw edge-to-edge behind transparent bars. -->
-    <style name="Theme.BiteCheck.Intro">
+    <style name="Theme.BiteCheck.Intro" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <!-- White iOS-chrome screens (welcome + auth): light bars, dark icons. -->
-    <style name="Theme.BiteCheck.Light">
+    <style name="Theme.BiteCheck.Light" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/bc_surface</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowBackground">@color/bc_surface</item>
     </style>
 
-    <!-- Primary filled pill button, SF-style weight. No drop shadow: the
-         default M3 button raises on press via a stateListAnimator — null it
-         out for a flat, iOS-like fill. -->
     <style name="Widget.BiteCheck.Button" parent="Widget.Material3.Button">
         <item name="cornerRadius">28dp</item>
         <item name="android:minHeight">52dp</item>
@@ -146,8 +119,6 @@
         <item name="elevation">0dp</item>
     </style>
 
-    <!-- Flat card: no shadow, hairline stroke, generous radius. Outlined (not
-         Elevated) so there is no surface-tint shadow at rest. -->
     <style name="Widget.BiteCheck.Card" parent="Widget.Material3.CardView.Outlined">
         <item name="cardElevation">0dp</item>
         <item name="cardCornerRadius">20dp</item>
@@ -155,7 +126,6 @@
         <item name="strokeColor">@color/bc_card_stroke</item>
     </style>
 
-    <!-- iOS grouped-form field: soft gray fill, no underline, rounded -->
     <style name="Widget.BiteCheck.TextInput" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">@color/bc_field_fill</item>
         <item name="boxStrokeWidth">0dp</item>
@@ -166,27 +136,23 @@
         <item name="boxCornerRadiusBottomEnd">14dp</item>
     </style>
 
-    <!-- iOS top bar pieces -->
     <style name="TextAppearance.BiteCheck.NavTitle" parent="TextAppearance.Material3.TitleMedium">
         <item name="android:textSize">17sp</item>
         <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="fontFamily">@font/inter_semibold</item>
     </style>
 
-    <!-- Yuka-style script display title (intro slides) -->
     <style name="TextAppearance.BiteCheck.Script" parent="TextAppearance.Material3.HeadlineLarge">
         <item name="android:textSize">40sp</item>
         <item name="android:fontFamily">@font/script_bold</item>
         <item name="fontFamily">@font/script_bold</item>
     </style>
 
-    <!-- Perfect-circle overlay (round arrow FAB on sign-up) -->
     <style name="ShapeAppearanceOverlay.BiteCheck.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <!-- iMessage-style chat bubbles: one tight corner on the sender's side -->
     <style name="ShapeAppearanceOverlay.BiteCheck.BubbleUser" parent="">
         <item name="cornerSize">20dp</item>
         <item name="cornerSizeBottomRight">6dp</item>
@@ -197,7 +163,6 @@
         <item name="cornerSizeBottomLeft">6dp</item>
     </style>
 
-    <!-- Borderless accent text button for Back / Next -->
     <style name="Widget.BiteCheck.NavTextButton" parent="Widget.Material3.Button.TextButton">
         <item name="android:minHeight">44dp</item>
         <item name="android:minWidth">0dp</item>
@@ -209,7 +174,6 @@
         <item name="iconTint">@color/bc_primary</item>
     </style>
 
-    <!-- Rounded bottom sheet (chat log confirmation, etc.) -->
     <style name="Theme.BiteCheck.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Widget.BiteCheck.BottomSheet</item>
     </style>
@@ -227,7 +191,6 @@
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
-    <!-- Navigation drawer item text -->
     <style name="TextAppearance.BiteCheck.NavItem" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:fontFamily">@font/inter_medium</item>
         <item name="fontFamily">@font/inter_medium</item>
@@ -239,7 +202,6 @@
         <item name="cornerSize">14dp</item>
     </style>
 
-    <!-- Selectable option row (onboarding wizard) -->
     <style name="Widget.BiteCheck.Option" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -264,7 +226,6 @@
         <item name="android:textColor">@color/bc_text_primary</item>
     </style>
 
-    <!-- Tappable full-width row inside a picker bottom sheet -->
     <style name="Widget.BiteCheck.SheetOption" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -278,13 +239,11 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <!-- Pop-in / pop-out with a bit of overshoot for anchored popups -->
     <style name="Animation.BiteCheck.Popup" parent="">
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
 
-    <!-- Hairline divider between list rows inside a card -->
     <style name="Widget.BiteCheck.RowDivider" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>

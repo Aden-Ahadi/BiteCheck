@@ -1,7 +1,10 @@
 package com.example.bitecheck.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 
+import com.example.bitecheck.data.local.BiteCheckDbHelper;
 import com.example.bitecheck.data.local.MealDao;
 import com.example.bitecheck.data.local.ProfileDao;
 import com.example.bitecheck.data.local.WaterDao;
@@ -9,20 +12,34 @@ import com.example.bitecheck.data.local.WeightDao;
 import com.example.bitecheck.data.remote.SupabaseDb;
 import com.example.bitecheck.model.Meal;
 import com.example.bitecheck.model.UserProfile;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /** Handles two-way synchronization between local SQLite and Supabase. */
 public final class SyncManager {
 
+    public static final String ACTION_SYNC_COMPLETE = "com.example.bitecheck.SYNC_COMPLETE";
+
     private SyncManager() {
     }
 
-    /** Triggers a full push/pull sync. Call this on app resume or after significant changes. */
+    /** Triggers a full push/pull sync. Call this on app resume. */
     public static void sync(Context context) {
         pushAll(context);
         pullAll(context);
+    }
+
+    /** Cleans up duplicate records caused by ID mismatches during sync. */
+    private static void deduplicate(Context context) {
+        try (BiteCheckDbHelper helper = new BiteCheckDbHelper(context)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            // Delete duplicate meals (same user, food, and time)
+            db.execSQL("DELETE FROM meals WHERE id NOT IN (SELECT MIN(id) FROM meals GROUP BY user_id, food, logged_at)");
+            // Delete duplicate water logs
+            db.execSQL("DELETE FROM water_logs WHERE id NOT IN (SELECT MIN(id) FROM water_logs GROUP BY user_id, amount_ml, logged_at)");
+            // Delete duplicate weight logs
+            db.execSQL("DELETE FROM weight_logs WHERE id NOT IN (SELECT MIN(id) FROM weight_logs GROUP BY user_id, weight_kg, logged_at)");
+        } catch (Exception ignored) {}
     }
 
     public static void pushAll(Context context) {
@@ -127,10 +144,11 @@ public final class SyncManager {
                     m.unit = str(row, "unit");
                     m.mealType = str(row, "meal_type");
                     m.calories = (int) num(row, "calories");
-                    m.loggedAt = str(row, "logged_at");
+                    m.loggedAt = DateUtil.normalize(str(row, "logged_at"));
                     m.synced = true;
                     dao.insert(m);
                 }
+                finishSync(app);
             }
         });
 
@@ -141,8 +159,9 @@ public final class SyncManager {
                 for (JsonElement el : rows) {
                     JsonObject row = el.getAsJsonObject();
                     dao.insert(str(row, "user_id"), str(row, "uuid"), 
-                            (int) num(row, "amount_ml"), str(row, "logged_at"), true);
+                            (int) num(row, "amount_ml"), DateUtil.normalize(str(row, "logged_at")), true);
                 }
+                finishSync(app);
             }
         });
 
@@ -153,10 +172,16 @@ public final class SyncManager {
                 for (JsonElement el : rows) {
                     JsonObject row = el.getAsJsonObject();
                     dao.insert(str(row, "user_id"), str(row, "uuid"), 
-                            num(row, "weight_kg"), str(row, "logged_at"), true);
+                            num(row, "weight_kg"), DateUtil.normalize(str(row, "logged_at")), true);
                 }
+                finishSync(app);
             }
         });
+    }
+
+    private static void finishSync(Context app) {
+        deduplicate(app);
+        app.sendBroadcast(new Intent(ACTION_SYNC_COMPLETE));
     }
 
     private static String str(JsonObject obj, String key) {

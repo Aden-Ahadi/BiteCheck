@@ -3,6 +3,7 @@ package com.example.bitecheck.data.local;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.example.bitecheck.util.DateUtil;
 
@@ -41,8 +42,10 @@ public class WaterDao {
         values.put("amount_ml", amountMl);
         values.put("logged_at", loggedAt);
         values.put("synced", synced ? 1 : 0);
+        
+        // Use CONFLICT_REPLACE to handle the UNIQUE constraint on UUID.
         helper.getWritableDatabase().insertWithOnConflict("water_logs", null, values,
-                android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE);
+                SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     /** Removes the most recent entry for the day (an "undo" for a mistaken tap). */
@@ -66,15 +69,14 @@ public class WaterDao {
     public List<Row> unsynced(String userId) {
         List<Row> rows = new ArrayList<>();
         try (Cursor cursor = helper.getReadableDatabase().query("water_logs",
-                new String[]{"id", "uuid", "amount_ml", "logged_at"},
-                "user_id = ? AND synced = 0", new String[]{userId},
+                null, "user_id = ? AND synced = 0", new String[]{userId},
                 null, null, "logged_at ASC")) {
             while (cursor.moveToNext()) {
                 Row row = new Row();
-                row.id = cursor.getLong(0);
-                row.uuid = cursor.getString(1);
-                row.amountMl = cursor.getInt(2);
-                row.loggedAt = cursor.getString(3);
+                row.id = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+                row.uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                row.amountMl = cursor.getInt(cursor.getColumnIndexOrThrow("amount_ml"));
+                row.loggedAt = cursor.getString(cursor.getColumnIndexOrThrow("logged_at"));
                 rows.add(row);
             }
         }

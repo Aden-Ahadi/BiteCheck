@@ -31,6 +31,7 @@ public class ProfileDao {
         values.put("calorie_target", profile.calorieTarget);
         values.put("synced", profile.synced ? 1 : 0);
         SQLiteDatabase db = helper.getWritableDatabase();
+        // user_id is the PRIMARY KEY, so CONFLICT_REPLACE handles the upsert perfectly.
         db.insertWithOnConflict("profile", null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
