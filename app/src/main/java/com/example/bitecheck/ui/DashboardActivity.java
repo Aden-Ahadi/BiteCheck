@@ -41,7 +41,7 @@ public class DashboardActivity extends BaseNavActivity {
     protected void onResume() {
         super.onResume();
         refreshDashboard();
-        SyncManager.pushAll(this);
+        SyncManager.sync(this);
     }
 
     private void refreshDashboard() {

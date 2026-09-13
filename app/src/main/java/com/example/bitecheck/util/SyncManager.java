@@ -9,15 +9,20 @@ import com.example.bitecheck.data.local.WeightDao;
 import com.example.bitecheck.data.remote.SupabaseDb;
 import com.example.bitecheck.model.Meal;
 import com.example.bitecheck.model.UserProfile;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-/**
- * Offline-first sync: pushes locally written rows (synced = 0) to Supabase.
- * Best-effort — failures leave rows unsynced for the next attempt.
- */
+/** Handles two-way synchronization between local SQLite and Supabase. */
 public final class SyncManager {
 
     private SyncManager() {
+    }
+
+    /** Triggers a full push/pull sync. Call this on app resume or after significant changes. */
+    public static void sync(Context context) {
+        pushAll(context);
+        pullAll(context);
     }
 
     public static void pushAll(Context context) {
@@ -52,6 +57,7 @@ public final class SyncManager {
         MealDao mealDao = new MealDao(app);
         for (Meal meal : mealDao.unsynced(userId)) {
             JsonObject row = new JsonObject();
+            row.addProperty("uuid", meal.uuid);
             row.addProperty("user_id", meal.userId);
             row.addProperty("food", meal.food);
             row.addProperty("quantity", meal.quantity);
@@ -60,7 +66,7 @@ public final class SyncManager {
             row.addProperty("calories", meal.calories);
             row.addProperty("logged_at", meal.loggedAt);
             long id = meal.id;
-            SupabaseDb.insert("meals", row, token, (ok, error) -> {
+            SupabaseDb.upsert("meals", "uuid", row, token, (ok, error) -> {
                 if (ok) {
                     mealDao.markSynced(id);
                 }
@@ -70,11 +76,12 @@ public final class SyncManager {
         WaterDao waterDao = new WaterDao(app);
         for (WaterDao.Row water : waterDao.unsynced(userId)) {
             JsonObject row = new JsonObject();
+            row.addProperty("uuid", water.uuid);
             row.addProperty("user_id", userId);
             row.addProperty("amount_ml", water.amountMl);
             row.addProperty("logged_at", water.loggedAt);
             long id = water.id;
-            SupabaseDb.insert("water_logs", row, token, (ok, error) -> {
+            SupabaseDb.upsert("water_logs", "uuid", row, token, (ok, error) -> {
                 if (ok) {
                     waterDao.markSynced(id);
                 }
@@ -84,15 +91,79 @@ public final class SyncManager {
         WeightDao weightDao = new WeightDao(app);
         for (WeightDao.Row weight : weightDao.unsynced(userId)) {
             JsonObject row = new JsonObject();
+            row.addProperty("uuid", weight.uuid);
             row.addProperty("user_id", userId);
             row.addProperty("weight_kg", weight.weightKg);
             row.addProperty("logged_at", weight.loggedAt);
             long id = weight.id;
-            SupabaseDb.insert("weight_logs", row, token, (ok, error) -> {
+            SupabaseDb.upsert("weight_logs", "uuid", row, token, (ok, error) -> {
                 if (ok) {
                     weightDao.markSynced(id);
                 }
             });
         }
+    }
+
+    public static void pullAll(Context context) {
+        Context app = context.getApplicationContext();
+        SessionManager session = new SessionManager(app);
+        String userId = session.getUserId();
+        String token = session.getAccessToken();
+        if (!NetworkUtil.isOnline(app) || userId == null || token == null) {
+            return;
+        }
+
+        // Pull Meals
+        SupabaseDb.selectAll("meals", "user_id", userId, token, rows -> {
+            if (rows != null) {
+                MealDao dao = new MealDao(app);
+                for (JsonElement el : rows) {
+                    JsonObject row = el.getAsJsonObject();
+                    Meal m = new Meal();
+                    m.uuid = str(row, "uuid");
+                    m.userId = str(row, "user_id");
+                    m.food = str(row, "food");
+                    m.quantity = num(row, "quantity");
+                    m.unit = str(row, "unit");
+                    m.mealType = str(row, "meal_type");
+                    m.calories = (int) num(row, "calories");
+                    m.loggedAt = str(row, "logged_at");
+                    m.synced = true;
+                    dao.insert(m);
+                }
+            }
+        });
+
+        // Pull Water
+        SupabaseDb.selectAll("water_logs", "user_id", userId, token, rows -> {
+            if (rows != null) {
+                WaterDao dao = new WaterDao(app);
+                for (JsonElement el : rows) {
+                    JsonObject row = el.getAsJsonObject();
+                    dao.insert(str(row, "user_id"), str(row, "uuid"), 
+                            (int) num(row, "amount_ml"), str(row, "logged_at"), true);
+                }
+            }
+        });
+
+        // Pull Weight
+        SupabaseDb.selectAll("weight_logs", "user_id", userId, token, rows -> {
+            if (rows != null) {
+                WeightDao dao = new WeightDao(app);
+                for (JsonElement el : rows) {
+                    JsonObject row = el.getAsJsonObject();
+                    dao.insert(str(row, "user_id"), str(row, "uuid"), 
+                            num(row, "weight_kg"), str(row, "logged_at"), true);
+                }
+            }
+        });
+    }
+
+    private static String str(JsonObject obj, String key) {
+        return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsString() : "";
+    }
+
+    private static double num(JsonObject obj, String key) {
+        return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsDouble() : 0;
     }
 }

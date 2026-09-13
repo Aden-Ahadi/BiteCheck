@@ -3,6 +3,7 @@ package com.example.bitecheck.model;
 public class Meal {
 
     public long id;
+    public String uuid;
     public String userId;
     public String food;
     public double quantity;

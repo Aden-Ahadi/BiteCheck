@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BiteCheckDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "bitecheck.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     public BiteCheckDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,6 +31,7 @@ public class BiteCheckDbHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE meals (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "uuid TEXT UNIQUE," +
                 "user_id TEXT NOT NULL," +
                 "food TEXT NOT NULL," +
                 "quantity REAL," +
@@ -42,6 +43,7 @@ public class BiteCheckDbHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE water_logs (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "uuid TEXT UNIQUE," +
                 "user_id TEXT NOT NULL," +
                 "amount_ml INTEGER NOT NULL," +
                 "logged_at TEXT NOT NULL," +
@@ -49,6 +51,7 @@ public class BiteCheckDbHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE weight_logs (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "uuid TEXT UNIQUE," +
                 "user_id TEXT NOT NULL," +
                 "weight_kg REAL NOT NULL," +
                 "logged_at TEXT NOT NULL," +
@@ -67,7 +70,23 @@ public class BiteCheckDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
-            seedFoods(db);   // v1 created the foods table empty
+            seedFoods(db);
+        }
+        if (oldVersion < 3) {
+            // Migration for Perfect Sync: add UUID columns to track records across devices.
+            db.execSQL("ALTER TABLE meals ADD COLUMN uuid TEXT;");
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS idx_meals_uuid ON meals(uuid);");
+            
+            db.execSQL("ALTER TABLE water_logs ADD COLUMN uuid TEXT;");
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS idx_water_uuid ON water_logs(uuid);");
+
+            db.execSQL("ALTER TABLE weight_logs ADD COLUMN uuid TEXT;");
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS idx_weight_uuid ON weight_logs(uuid);");
+            
+            // Generate UUIDs for existing unsynced data so they can be synced uniquely.
+            db.execSQL("UPDATE meals SET uuid = lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab', abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))) WHERE uuid IS NULL;");
+            db.execSQL("UPDATE water_logs SET uuid = lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab', abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))) WHERE uuid IS NULL;");
+            db.execSQL("UPDATE weight_logs SET uuid = lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab', abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))) WHERE uuid IS NULL;");
         }
     }
 

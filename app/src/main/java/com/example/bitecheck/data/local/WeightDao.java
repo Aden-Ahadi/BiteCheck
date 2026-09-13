@@ -8,13 +8,16 @@ import com.example.bitecheck.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class WeightDao {
 
     public static class Row {
         public long id;
+        public String uuid;
         public double weightKg;
         public String loggedAt;
+        public boolean synced;
     }
 
     private final BiteCheckDbHelper helper;
@@ -24,12 +27,21 @@ public class WeightDao {
     }
 
     public void insert(String userId, double weightKg) {
+        insert(userId, null, weightKg, DateUtil.now(), false);
+    }
+
+    public void insert(String userId, String uuid, double weightKg, String loggedAt, boolean synced) {
+        if (uuid == null) {
+            uuid = UUID.randomUUID().toString();
+        }
         ContentValues values = new ContentValues();
+        values.put("uuid", uuid);
         values.put("user_id", userId);
         values.put("weight_kg", weightKg);
-        values.put("logged_at", DateUtil.now());
-        values.put("synced", 0);
-        helper.getWritableDatabase().insert("weight_logs", null, values);
+        values.put("logged_at", loggedAt);
+        values.put("synced", synced ? 1 : 0);
+        helper.getWritableDatabase().insertWithOnConflict("weight_logs", null, values,
+                android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     /** Latest logged weight, or -1 when none exists. */
@@ -44,8 +56,7 @@ public class WeightDao {
     public List<Row> list(String userId) {
         List<Row> rows = new ArrayList<>();
         try (Cursor cursor = helper.getReadableDatabase().query("weight_logs",
-                new String[]{"id", "weight_kg", "logged_at"},
-                "user_id = ?", new String[]{userId},
+                null, "user_id = ?", new String[]{userId},
                 null, null, "logged_at DESC")) {
             while (cursor.moveToNext()) {
                 rows.add(rowFrom(cursor));
@@ -57,8 +68,7 @@ public class WeightDao {
     public List<Row> unsynced(String userId) {
         List<Row> rows = new ArrayList<>();
         try (Cursor cursor = helper.getReadableDatabase().query("weight_logs",
-                new String[]{"id", "weight_kg", "logged_at"},
-                "user_id = ? AND synced = 0", new String[]{userId},
+                null, "user_id = ? AND synced = 0", new String[]{userId},
                 null, null, "logged_at ASC")) {
             while (cursor.moveToNext()) {
                 rows.add(rowFrom(cursor));
@@ -76,9 +86,11 @@ public class WeightDao {
 
     private Row rowFrom(Cursor cursor) {
         Row row = new Row();
-        row.id = cursor.getLong(0);
-        row.weightKg = cursor.getDouble(1);
-        row.loggedAt = cursor.getString(2);
+        row.id = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+        row.uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+        row.weightKg = cursor.getDouble(cursor.getColumnIndexOrThrow("weight_kg"));
+        row.loggedAt = cursor.getString(cursor.getColumnIndexOrThrow("logged_at"));
+        row.synced = cursor.getInt(cursor.getColumnIndexOrThrow("synced")) == 1;
         return row;
     }
 }

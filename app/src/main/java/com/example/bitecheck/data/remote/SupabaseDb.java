@@ -70,6 +70,41 @@ public class SupabaseDb {
         });
     }
 
+    public interface RowsCallback {
+        /** rows is null if the request failed. */
+        void onResult(JsonArray rows);
+    }
+
+    /** Fetch rows where filterColumn equals filterValue. */
+    public static void selectAll(String table, String filterColumn, String filterValue,
+                                 String accessToken, RowsCallback callback) {
+        Request request = SupabaseClient
+                .authorizedRequest("/rest/v1/" + table
+                        + "?" + filterColumn + "=eq." + filterValue, accessToken)
+                .get()
+                .build();
+        SupabaseClient.http().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                MAIN.post(() -> callback.onResult(null));
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                JsonArray rows = null;
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        rows = JsonParser.parseString(response.body().string()).getAsJsonArray();
+                    } catch (RuntimeException ignored) {
+                    }
+                }
+                response.close();
+                JsonArray finalRows = rows;
+                MAIN.post(() -> callback.onResult(finalRows));
+            }
+        });
+    }
+
     /** Insert-or-update one row keyed by conflictColumn (e.g. "user_id"). */
     public static void upsert(String table, String conflictColumn, JsonObject row,
                               String accessToken, WriteCallback callback) {
