@@ -280,4 +280,8 @@
     <string name="action_ok">OK</string>
     <string name="action_thanks_chef">Thanks, Chef!</string>
     <string name="msg_sms_permission_granted">SMS permission granted! Tap submit again to send.</string>
+    <string name="title_reset_password">Reset Password</string>
+    <string name="sub_reset_password">Choose a new secure password for your account.</string>
+    <string name="action_save_password">Save New Password</string>
+    <string name="msg_password_updated">Password updated! Please log in.</string>
 </resources>

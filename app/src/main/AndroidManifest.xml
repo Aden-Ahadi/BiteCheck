@@ -43,7 +43,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Deep link for Password Reset -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="reset-password"
+                    android:scheme="bitecheck" />
+            </intent-filter>
         </activity>
+
+        <activity android:name=".ui.UpdatePasswordActivity" android:exported="false" />
 
         <!-- Auth & onboarding -->
         <activity

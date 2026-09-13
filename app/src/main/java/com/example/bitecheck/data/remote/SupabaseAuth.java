@@ -89,7 +89,9 @@ public class SupabaseAuth {
     public void recoverPassword(String email, AuthCallback callback) {
         JsonObject body = new JsonObject();
         body.addProperty("email", email);
-        Request request = SupabaseClient.request("/auth/v1/recover")
+        // Pass a redirect URL that the Android app will handle
+        String redirectTo = "bitecheck://reset-password";
+        Request request = SupabaseClient.request("/auth/v1/recover?redirect_to=" + redirectTo)
                 .post(RequestBody.create(GSON.toJson(body), JSON))
                 .build();
         SupabaseClient.http().newCall(request).enqueue(new Callback() {
@@ -107,6 +109,36 @@ public class SupabaseAuth {
                     String message = extractError(responseBody, response.code());
                     MAIN.post(() -> callback.onError(message));
                 }
+            }
+        });
+    }
+
+    public interface SimpleCallback {
+        void onResult(boolean success, String error);
+    }
+
+    public void updatePassword(String accessToken, String newPassword, SimpleCallback callback) {
+        JsonObject body = new JsonObject();
+        body.addProperty("password", newPassword);
+        Request request = SupabaseClient.authorizedRequest("/auth/v1/user", accessToken)
+                .put(RequestBody.create(GSON.toJson(body), JSON))
+                .build();
+        SupabaseClient.http().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                MAIN.post(() -> callback.onResult(false, e.getMessage()));
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                boolean ok = response.isSuccessful();
+                String err = null;
+                if (!ok && response.body() != null) {
+                    err = extractError(response.body().string(), response.code());
+                }
+                response.close();
+                String finalErr = err;
+                MAIN.post(() -> callback.onResult(ok, finalErr));
             }
         });
     }
